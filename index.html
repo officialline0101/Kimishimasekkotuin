@@ -183,6 +183,12 @@
 #repairLabel, #repairButtons {
     display: none;
 }
+    .highlight-background {
+        background-color: #f9f9d6;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
     </style>
 </head>
 <body>
@@ -200,9 +206,13 @@
             <button type="button" id="repeatVisit" onclick="selectVisit(this)">その他</button>
         </div>
 
-        <div class="label">希望日時</div>
-            <label>月・火・水・木・金は午前中のみご予約可能です。<br>
-午後に関してはご来院順にご対応しております。</label>
+    <div class="label">希望日時</div>
+    <div class="highlight-background">
+        <span class="highlight-text">
+            月・火・水・木・金は<strong>午前中のみご予約可能</strong>です。<br>
+            午後に関してはご来院順にご対応しております。
+        </span>
+    </div>
         <div class="calendar-container">
             <div class="week-button-container">
                 <button class="week-button" onclick="previousWeek()">前の週</button>
@@ -585,66 +595,71 @@ for (let i = 0; i < 7; i++) {
             cell.textContent = '◯';
             cell.classList.add('available');
         }
-// 12:00 - 15:00 を✕に設定（月曜日から木曜日のみ）
-if (
-    (slotStart.getDay() >= 1 && slotStart.getDay() <= 5) && // 月曜日から木曜日
-    (
-        (slotStart.getHours() === 12 && slotStart.getMinutes() >= 00) || // 12:00以降
-        (slotStart.getHours() === 13) || // 13:00台全て
-        (slotStart.getHours() === 14) || // 14:00台全て
-        (slotStart.getHours() === 14 && slotStart.getMinutes() < 60)  // 14:00から14:59まで
-    )
-) {
-    cell.textContent = '✕';
-    cell.classList.add('unavailable');
-    cell.setAttribute('data-date', slotStart.toISOString());
-    continue;
-}
-// 12:00 - 15:00 を✕に設定（月曜日から木曜日のみ）
-if (
-    (slotStart.getDay() >= 6 && slotStart.getDay() <= 7) && // 月曜日から木曜日
-    (
-        (slotStart.getHours() === 12 && slotStart.getMinutes() >= 00) || // 12:00以降
-        (slotStart.getHours() === 13 && slotStart.getMinutes() < 60)  // 14:00から14:59まで
-    )
-) {
-    cell.textContent = '✕';
-    cell.classList.add('unavailable');
-    cell.setAttribute('data-date', slotStart.toISOString());
-    continue;
-}
-// 12:30 - 13:59 を✕に設定（月曜日から木曜日のみ）
-if (
-    (slotStart.getDay() >= 1 && slotStart.getDay() <= 5) && // 月曜日から木曜日
-    (
-        (slotStart.getHours() === 08 && slotStart.getMinutes() < 30)     // 13:59まで
-    )
-) {
-    cell.textContent = '✕';
-    cell.classList.add('unavailable');
-    cell.setAttribute('data-date', slotStart.toISOString());
-    continue;
-}
-// 12:30 - 13:59 を✕に設定（月曜日から木曜日のみ）
-if (
-    (slotStart.getDay() >= 6 && slotStart.getDay() <= 7) && // 月曜日から木曜日
-    (
-        (slotStart.getHours() === 17 && slotStart.getMinutes() >= 00) || // 12:00以降
-        (slotStart.getHours() === 18) || // 13:00台全て
-        (slotStart.getHours() === 19) || // 14:00台全て
-        (slotStart.getHours() === 20 && slotStart.getMinutes() === 0) // 15:00
-    )
-) {
-    cell.textContent = '✕';
-    cell.classList.add('unavailable');
-    cell.setAttribute('data-date', slotStart.toISOString());
-    continue;
-}
         // 営業日で、指定されている時間以外の時間は×
         else if (businessEventTimes.length > 0) {
             cell.textContent = '✕';
             cell.classList.add('unavailable');
         }
+
+        // 12:00 - 15:00 を✕に設定（月曜日から金曜日のみ）
+        if (
+            (slotStart.getDay() >= 1 && slotStart.getDay() <= 5) && // 月曜日から金曜日
+            (
+                (slotStart.getHours() === 12 && slotStart.getMinutes() >= 00) || // 12:00以降
+                (slotStart.getHours() === 13) || // 13:00台全て
+                (slotStart.getHours() === 14 && slotStart.getMinutes() < 60)  // 14:00から14:59まで
+            )
+        ) {
+            cell.textContent = '✕';
+            cell.classList.add('unavailable');
+            cell.setAttribute('data-date', slotStart.toISOString());
+            continue;
+        }
+
+// 08:00 - 08:30 を✕に設定（月曜日から金曜日のみ）
+if (
+    (slotStart.getDay() >= 1 && slotStart.getDay() <= 5) && // 月曜日から金曜日
+    (
+        (slotStart.getHours() === 8 && slotStart.getMinutes() < 30)  // 08:00から08:30まで
+    )
+) {
+    cell.textContent = '✕';
+    cell.classList.add('unavailable');
+    cell.setAttribute('data-date', slotStart.toISOString());
+    continue;
+}
+
+
+// 12:00 - 13:59 を✕に設定（土曜日のみ）
+if (
+    (slotStart.getDay() === 6) && // 土曜日のみ
+    (
+        (slotStart.getHours() === 12 && slotStart.getMinutes() >= 00) || // 12:00以降
+        (slotStart.getHours() === 13 && slotStart.getMinutes() < 60)  // 13:00から13:59まで
+    )
+) {
+    cell.textContent = '✕';
+    cell.classList.add('unavailable');
+    cell.setAttribute('data-date', slotStart.toISOString());
+    continue;
+}
+
+        // 17:00 - 20:00 を✕に設定（土曜日のみ）
+        if (
+            (slotStart.getDay() === 6) && // 土曜日のみ
+            (
+                (slotStart.getHours() === 17 && slotStart.getMinutes() >= 00) || // 17:00以降
+                (slotStart.getHours() === 18) || // 18:00台全て
+                (slotStart.getHours() === 19) || // 19:00台全て
+                (slotStart.getHours() === 20 && slotStart.getMinutes() === 0) // 20:00
+            )
+        ) {
+            cell.textContent = '✕';
+            cell.classList.add('unavailable');
+            cell.setAttribute('data-date', slotStart.toISOString());
+            continue;
+        }
+
         // 日曜日で、営業日ではない場合
         else if (slotStart.getDay() === 0 && !isBusinessDay && businessEventTimes.length === 0) {
             cell.textContent = '✕';

@@ -200,7 +200,7 @@
         <div class="label">電話番号(自由記述)</div>
         <input type="tel" id="phone" placeholder="電話番号を入力してください">
 
-        <div class="label">来店回数(必須)</div>
+        <div class="label">来院回数(必須)</div>
         <div class="visit-buttons">
             <button type="button" id="firstVisit" onclick="selectVisit(this)">初診</button>
             <button type="button" id="repeatVisit" onclick="selectVisit(this)">その他</button>
@@ -280,7 +280,7 @@
 
 function updateDisplayInfo() {
     const name = document.getElementById('name').value;
-    const visitCountText = visitCount ? `・<span style="color:red;"><strong>ご来店回数</strong></span>：${visitCount}` : '・来店回数が未選択です';
+    const visitCountText = visitCount ? `・<span style="color:red;"><strong>ご来院回数</strong></span>：${visitCount}` : '・来院回数が未選択です';
     const selectedDateText = selectedFullDate ? `・<span style="color:red;"><strong>希望日時</strong></span>：${selectedFullDate}` : '・日時が未選択です'; // 日付が未選択の場合のメッセージを追加
 
     // displayInfo要素に情報を表示
@@ -435,14 +435,14 @@ function updateTotalAmount() {
 
 // フォームデータのチェック
 if (!formData.name || !formData.phone || !formData.visitCount) {
-    alert('お名前・電話番号・ご来店回数すべてご記入ください。');
+    alert('お名前・電話番号・ご来院回数すべてご記入ください。');
     return;
 }
 
             // LINEトークにメッセージを送信
             liff.sendMessages([{
                 type: 'text',
-                text: `【予約フォーム】\nお名前：${formData.name}\n電話番号：${formData.phone}\nご来店回数：${formData.visitCount}\n希望日時：\n ${formData.dates[0]}\nメッセージ：${formData.message}`
+                text: `【予約フォーム】\nお名前：${formData.name}\n電話番号：${formData.phone}\nご来院回数：${formData.visitCount}\n希望日時：\n ${formData.dates[0]}\nメッセージ：${formData.message}`
             }]).then(() => {
                 /* メッセージ送信成功時の処理 */
                 alert('当日キャンセルは無いようにお願いいたします。');

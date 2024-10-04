@@ -606,7 +606,7 @@ for (let i = 0; i < 7; i++) {
         if (
             (slotStart.getDay() >= 1 && slotStart.getDay() <= 5) && // 月曜日から金曜日
             (
-                (slotStart.getHours() === 12 && slotStart.getMinutes() >= 00) || // 12:00以降
+                (slotStart.getHours() === 12 && slotStart.getMinutes() >= 30) || // 12:00以降
                 (slotStart.getHours() === 13) || // 13:00台全て
                 (slotStart.getHours() === 14 && slotStart.getMinutes() < 60)  // 14:00から14:59まで
             )
@@ -635,7 +635,7 @@ if (
 if (
     (slotStart.getDay() === 6) && // 土曜日のみ
     (
-        (slotStart.getHours() === 12 && slotStart.getMinutes() >= 00) || // 12:00以降
+        (slotStart.getHours() === 12 && slotStart.getMinutes() >= 30) || // 12:00以降
         (slotStart.getHours() === 13 && slotStart.getMinutes() < 60)  // 13:00から13:59まで
     )
 ) {
@@ -649,7 +649,7 @@ if (
         if (
             (slotStart.getDay() === 6) && // 土曜日のみ
             (
-                (slotStart.getHours() === 17 && slotStart.getMinutes() >= 00) || // 17:00以降
+                (slotStart.getHours() === 17 && slotStart.getMinutes() >= 30) || // 17:00以降
                 (slotStart.getHours() === 18) || // 18:00台全て
                 (slotStart.getHours() === 19) || // 19:00台全て
                 (slotStart.getHours() === 20 && slotStart.getMinutes() === 0) // 20:00
